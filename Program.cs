@@ -5,23 +5,15 @@ class Program
 {
     static void Main()
     {
-        var N = int.Parse(Console.ReadLine());
-        
-        for (int i = 0; i < N; i++)
-        {
-            var tiem = Console.ReadLine();
-            string[] arr = tiem.Split(':', ' ');
-            int hour = int.Parse(arr[0]);
-            int minute = int.Parse(arr[1]);
-            int addHour = int.Parse(arr[2]);
-            int addMinute = int.Parse(arr[3]);
-
-            hour += addHour + (minute + addMinute) / 60;
-            minute += addMinute;
-            minute %= 60;
-            hour %= 24;
-
-            Console.WriteLine($"{hour:D2}:{minute:D2}");
-        }
+        Enumerable.Range(0, int.Parse(Console.ReadLine()))
+            .Select(_ => Console.ReadLine().Split(new[] { ':', ' ' }).Select(int.Parse).ToArray())
+            .Select(arr =>
+            {
+                arr[0] = (arr[0] + arr[2] + (arr[1] + arr[3]) / 60) % 24;
+                arr[1] = (arr[1] + arr[3]) % 60;
+                return $"{arr[0]:D2}:{arr[1]:D2}";
+            })
+            .ToList()
+            .ForEach(Console.WriteLine);
     }
 }
